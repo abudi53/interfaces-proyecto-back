@@ -30,5 +30,8 @@ Route::group([
     Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
     Route::post('me', 'App\Http\Controllers\AuthController@me');
     Route::post('register', 'App\Http\Controllers\AuthController@register');
+    Route::middleware('valid.token')->get('/verify-token', function (Request $request) {
+        return response()->json(['message' => 'Token is valid']);
+    });
 
 });
