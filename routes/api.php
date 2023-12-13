@@ -18,6 +18,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::apiResource("profile", "App\Http\Controllers\ProfileController");
+
+
 Route::group([
 
     'middleware' => 'api',

@@ -44,6 +44,11 @@ class User extends Authenticatable implements JWTSubject
         'password' => 'hashed',
     ];
 
+    public function profile()
+{
+    return $this->hasOne('App\Models\Profile');
+}
+
     public function getJWTIdentifier() 
     {
         return $this->getKey();
