@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Profile;
+
 
 class AuthController extends Controller
 {
@@ -97,10 +99,21 @@ class AuthController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
+
+        
+        
         $user = User::create(array_merge(
-                    $validator->validated(),
-                    ['password' => bcrypt($request->password)]
-                ));
+            $validator->validated(),
+            [
+                'password' => bcrypt($request->password)
+                ]
+            ));
+            
+        $profile = Profile::create(['user_id' => $user->id]);
+
+        $user->profile_id = $profile->id;
+        $user->save();
+
 
         return response()->json([
             'message' => 'Usuario registrado exitosamente!',
