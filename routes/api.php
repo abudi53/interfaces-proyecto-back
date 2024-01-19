@@ -42,3 +42,7 @@ Route::group([
 });
 
 Route::post('libros', [BookController::class, 'store']);
+Route::get('libros', [BookController::class, 'index']);
+Route::get('libros/{id}', [BookController::class, 'show']);
+Route::post('libros/{id}', [BookController::class, 'update']);
+Route::delete('libros/{id}', [BookController::class, 'destroy']);

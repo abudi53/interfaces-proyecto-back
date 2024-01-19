@@ -16,6 +16,18 @@ class BookController extends Controller
      */
     public function index()
     {
+        try{
+            $books = Book::all();
+            return response()->json([
+                'books' => $books
+            ], 200);
+        }
+        catch(\Exception $e){
+            return response()->json([
+                'message' => 'Error al obtener los libros',
+                'error' => $e->getMessage()
+            ], 500);
+        }
         //
     }
 
@@ -70,6 +82,17 @@ class BookController extends Controller
      */
     public function show(string $id)
     {
+        $book = Book::find($id);
+        if(!$book){
+            return response()->json([
+                'message' => 'Libro no encontrado'
+            ], 404);
+        }else{
+
+           return response()->json([
+                'book' => $book
+            ], 200);
+        }
         //
     }
 
@@ -78,7 +101,7 @@ class BookController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        
     }
 
     /**
@@ -86,7 +109,65 @@ class BookController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $book = Book::find($id);
+            if (!$book) {
+                return response()->json([
+                    'message' => 'Libro no encontrado'
+                ], 404);
+            } else {
+                $book->titulo = $request->titulo;
+                $book->autor = $request->autor;
+                $book->editorial = $request->editorial;
+                $book->genero = $request->genero;
+                $book->fecha = $request->fecha;
+
+                if($request->foto){
+                    $storage = Storage::disk('public');
+
+                    // Eliminar imagen anterior
+                    if ($storage->exists($book->foto)) {
+                        $storage->delete($book->foto);
+                    }
+
+                    // Nombre de la nueva imagen
+                    $imageName = Str::random(32).'.'.$request->foto->getClientOriginalExtension();
+                    $book->foto = $imageName;
+
+                    // Guardar imagen
+                    $storage->put($imageName, file_get_contents($request->foto));
+                }
+
+                if($request->pdf){
+                    $storage = Storage::disk('public');
+
+                    // Eliminar pdf anterior
+                    if ($storage->exists($book->pdf)) {
+                        $storage->delete($book->pdf);
+                    }
+
+                    // Nombre del nuevo pdf
+                    $pdfName = Str::random(32).'.'.$request->pdf->getClientOriginalExtension();
+                    $book->pdf = $pdfName;
+
+                    // Guardar pdf
+                    $storage->put($pdfName, file_get_contents($request->pdf));
+                }
+
+                // Actualizar libro
+                $book->save();
+
+                // Retornar JSON
+                return response()->json([
+                    'message' => 'Libro actualizado correctamente'
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al actualizar el libro',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -94,6 +175,27 @@ class BookController extends Controller
      */
     public function destroy(string $id)
     {
+        $book = Book::find($id);
+        if(!$book){
+            return response()->json([
+                'message' => 'Libro no encontrado'
+            ], 404);
+    }
+    $storage = Storage::disk('public');
+
+    if($storage->exists($book->foto)){
+        $storage->delete($book->foto);
+    }
+
+    if($storage->exists($book->pdf)){
+        $storage->delete($book->pdf);
+    }
+
+    $book->delete();
+
+    return response()->json([
+        'message' => 'Libro eliminado correctamente'
+    ], 200);
         //
     }
 }
