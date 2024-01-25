@@ -44,6 +44,15 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'titulo' => 'required',
+            'autor' => 'required',
+            'editorial' => 'required',
+            'genero' => 'required',
+            'fecha' => 'required|integer',
+            'foto' => 'required|mimes:jpg,jpeg,png',
+            'pdf' => 'required|mimes:pdf'
+        ]);
         try{
             $imageName = Str::random(32).'.'.$request->foto->getClientOriginalExtension();
             $pdfName = Str::random(32).'.'.$request->pdf->getClientOriginalExtension();
