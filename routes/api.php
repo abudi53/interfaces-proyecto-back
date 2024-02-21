@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SocialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +47,8 @@ Route::get('libros', [BookController::class, 'index']);
 Route::get('libros/{id}', [BookController::class, 'show']);
 Route::post('libros/{id}', [BookController::class, 'update']);
 Route::delete('libros/{id}', [BookController::class, 'destroy']);
+
+Route::post('redes', [SocialController::class, 'store']);
+Route::get('redes', [SocialController::class, 'index']);
+Route::get('redes/{id}', [SocialController::class, 'show']);
+Route::post('redes/{id}', [SocialController::class, 'update']);
