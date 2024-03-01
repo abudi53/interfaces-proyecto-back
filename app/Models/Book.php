@@ -16,6 +16,7 @@ class Book extends Model
         'genero',
         'fecha',
         'foto',
-        'pdf'
+        'pdf',
+        'precio'
     ];
 }

@@ -51,7 +51,8 @@ class BookController extends Controller
             'genero' => 'required',
             'fecha' => 'required|integer',
             'foto' => 'required|mimes:jpg,jpeg,png',
-            'pdf' => 'required|mimes:pdf'
+            'pdf' => 'required|mimes:pdf',
+            'precio' => 'required|numeric'
         ]);
         try{
             $imageName = Str::random(32).'.'.$request->foto->getClientOriginalExtension();
@@ -66,6 +67,7 @@ class BookController extends Controller
                 'fecha' => $request->fecha,
                 'foto' => $imageName,
                 'pdf' => $pdfName,
+                'precio' => $request->precio
             ]);
 
             // Guardar imagen y pdf
@@ -130,6 +132,7 @@ class BookController extends Controller
                 $book->editorial = $request->editorial;
                 $book->genero = $request->genero;
                 $book->fecha = $request->fecha;
+                $book->precio = $request->precio;
 
                 if($request->foto){
                     $storage = Storage::disk('public');
