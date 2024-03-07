@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SocialController;
+use App\Mail\FacturaMail;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,3 +53,17 @@ Route::post('redes', [SocialController::class, 'store']);
 Route::get('redes', [SocialController::class, 'index']);
 Route::get('redes/{id}', [SocialController::class, 'show']);
 Route::post('redes/{id}', [SocialController::class, 'update']);
+
+Route::post('/factura', function (Request $request) {
+    // Validate the request to make sure a file is uploaded
+    $request->validate([
+        'pdf' => 'required|mimes:pdf|max:2048',
+    ]);
+
+    // Store the uploaded PDF file
+    $filePath = $request->file('pdf')->store('uploads');
+    $fullPath = storage_path('app/' . $filePath);
+
+    // Send the email
+    Mail::to('abdallahffh@gmail.com')->send(new FacturaMail($fullPath));
+});

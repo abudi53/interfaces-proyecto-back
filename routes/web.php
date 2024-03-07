@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Mail\FacturaMail;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/factura', function () {
+
+    $filePath = public_path('favicon.ico');
+
+    Mail::to('abdallahffh@gmail.com')->send(new FacturaMail($filePath));
 });
