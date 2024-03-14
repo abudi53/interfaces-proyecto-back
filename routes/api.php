@@ -6,6 +6,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SocialController;
 use App\Mail\FacturaMail;
+use App\Http\Controllers\postIgController ;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,13 @@ Route::post('redes', [SocialController::class, 'store']);
 Route::get('redes', [SocialController::class, 'index']);
 Route::get('redes/{id}', [SocialController::class, 'show']);
 Route::post('redes/{id}', [SocialController::class, 'update']);
+
+
+Route::post('videos', [postIgController::class, 'store']);
+Route::get('videos', [postIgController::class, 'index']);
+Route::get('videos/{id}', [postIgController::class, 'show']);
+Route::post('videos/{id}', [postIgController::class, 'update']);
+Route::post('videos/{id}', [postIgController::class, 'destroy']);
 
 Route::post('/factura', function (Request $request) {
     // Validate the request to make sure a file is uploaded
