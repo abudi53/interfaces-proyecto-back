@@ -60,7 +60,7 @@ Route::post('videos', [postIgController::class, 'store']);
 Route::get('videos', [postIgController::class, 'index']);
 Route::get('videos/{id}', [postIgController::class, 'show']);
 Route::post('videos/{id}', [postIgController::class, 'update']);
-Route::post('videos/{id}', [postIgController::class, 'destroy']);
+Route::delete('videos/{id}', [postIgController::class, 'destroy']);
 
 Route::post('/factura', function (Request $request) {
     // Validate the request to make sure a file is uploaded
